@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Intelligent Excuse Generator</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Fredoka One', cursive;
+      background: #d2f1ef;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 20px;
+    }
+    .header {
+      background-color: #3b3b3b;
+      color: #3ad1ff;
+      padding: 20px 40px;
+      border-radius: 30px;
+      margin: 20px;
+      font-size: 24px;
+    }
+    .form-container {
+      background-color: #ffffff;
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      max-width: 500px;
+      width: 100%;
+    }
+    label {
+      display: block;
+      margin: 10px 0 5px;
+      font-size: 18px;
+      color: #207ba3;
+    }
+    input, textarea, select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      font-family: 'Fredoka One', cursive;
+      font-size: 16px;
+    }
+    button {
+      background-color: #c1f5c1;
+      border: none;
+      border-radius: 20px;
+      padding: 12px 24px;
+      font-size: 18px;
+      color: #207ba3;
+      box-shadow: 2px 2px 4px #888;
+      cursor: pointer;
+    }
+    button:hover {
+      transform: scale(1.05);
+      background-color: #b3ecb3;
+    }
+    #output, #chatScreenshot, #mapProof {
+      margin-top: 30px;
+      padding: 20px;
+    }
+    .chat-box {
+      border: 1px solid #ccc;
+      padding: 10px;
+      background-color: #fff;
+      display: inline-block;
+      text-align: left;
+      font-family: sans-serif;
+      border-radius: 10px;
+    }
+    .bubble {
+      padding: 10px;
+      border-radius: 10px;
+      margin: 5px;
+    }
+    .you {
+      background: #e0e0e0;
+      align-self: flex-start;
+    }
+    .me {
+      background: #a6e3a1;
+      align-self: flex-end;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">Intelligent Excuse Generator</div>
+  <div class="form-container">
+    <form id="excuseForm">
+      <label for="messUp">What did you mess up?</label>
+      <textarea id="messUp" name="messUp" rows="3" placeholder="E.g. Missed a meeting, forgot a deadline..."></textarea>
+      <label for="tone">What kind of excuse do you want?</label>
+      <select id="tone" name="tone">
+        <option value="professional">Professional</option>
+        <option value="funny">Funny</option>
+        <option value="emotional">Emotional</option>
+        <option value="dramatic">Dramatic</option>
+      </select>
+      <button type="submit">Generate Excuse</button>
+    </form>
+  </div>
+  <div id="output"></div>
+  <div id="chatScreenshot"></div>
+  <div id="mapProof"></div>
+  <script>
+    const form = document.getElementById("excuseForm");
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const messUp = document.getElementById("messUp").value;
+      const tone = document.getElementById("tone").value;
+      const excuse = `Here's a ${tone} excuse for: "${messUp}" → I experienced an unexpected emergency that required my full attention.`;
+      document.getElementById("output").innerHTML = `<h2>Generated Excuse</h2><p>${excuse}</p>`;
+      const chatHTML = `
+        <div id="chat" class="chat-box">
+          <div class="bubble you">Why didn’t you show up?</div>
+          <div class="bubble me">${excuse}</div>
+        </div>
+      `;
+      document.getElementById("chatScreenshot").innerHTML = `<h2>Fake Chat Screenshot</h2>` + chatHTML;
+      html2canvas(document.getElementById("chat"), { backgroundColor: null }).then(canvas => {
+        document.getElementById("chatScreenshot").appendChild(canvas);
+      });
+      const fakeLocation = "India+Gate,Delhi";
+      const mapURL = `https://maps.googleapis.com/maps/api/staticmap?center=${fakeLocation}&zoom=15&size=400x300&markers=color:red|label:E|${fakeLocation}&key=YOUR_API_KEY`;
+      document.getElementById("mapProof").innerHTML = `
+        <h2>Fake Location Proof</h2>
+        <img src="${mapURL}" alt="Fake Map" style="border-radius:10px; box-shadow:2px 2px 6px #888;">
+      `;
+    });
+  </script>
+</body>
+</html>
